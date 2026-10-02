@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Gästbok</title>
+    <style>
+     body {
+    font-family: Arial;
+    width: 600px;
+    margin: auto;
+}
+
+input, textarea {
+    width: 100%;
+}
+
+.inlagg {
+    border: 1px solid black;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.kommentar {
+    white-space: pre-line;
+}
+    </style>
+</head>
+<body>
+    <h1>Gästbok</h1>
+
+    <form action="/skicka" method="POST">
+        <label>Namn:
+            <input type="text" name="name" required maxlength="60">
+        </label>
+        <label>E-post:
+            <input type="email" name="email" maxlength="50">
+        </label>
+        <label>Hemsida:
+            <input type="text" name="homepage" maxlength="200">
+        </label>
+        <label>Kommentar:
+            <textarea name="comment" rows="4" required maxlength="500"></textarea>
+        </label>
+        <button type="submit">Skicka</button>
+    </form>
+
+    <h2>Inlägg</h2>
+    {% for i in inlagg %}
+        <div class="inlagg">
+            <strong>{{ i.name }}</strong>
+            <span class="tid">{{ i.time }}</span><br>
+            {% if i.email %}E-post: {{ i.email }}<br>{% endif %}
+            {% if i.homepage.startswith("http") %}
+                Hemsida: <a href="{{ i.homepage }}">{{ i.homepage }}</a><br>
+            {% endif %}
+            <p class="kommentar">{{ i.comment }}</p>
+        </div>
+    {% else %}
+        <p>Inga inlägg ännu. Bli först!</p>
+    {% endfor %}
+</body>
+</html>
